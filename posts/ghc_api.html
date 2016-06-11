@@ -72,7 +72,7 @@ runEngingeGhc pkg act <span class="fu">=</span>
                      }
       _ <span class="ot">&lt;-</span> GHC.setSessionDynFlags df'
       act</code></pre></div>
-<p>Since we are compiling more than one module we need to set the <code>gchMode</code> flag to <code>CompManager</code> which is equivalent to <code>--make</code> when compiling from the command line. We set <code>ghcLink</code> to LinkInMemory which amounts to doing dynamic linking of the libraries.</p>
+<p>Since we are compiling more than one module we need to set the <code>gchMode</code> flag to <code>CompManager</code> which is equivalent to <code>--make</code> when compiling from the command line. We set <code>ghcLink</code> to LinkInMemory which amounts to doing dynamic linking of the libraries. Also important are the exposed packages defined in <code>packageFlags</code>, these expose a few packages needed by our program that otherwise would be hidden (we can achieve a similar result using <code>ghc-pkg expose package</code>).</p>
 <p>The rest of the set up is straightforward, we add paths to the includes and libraries directories so the compiler knows where to look and set a temporary directory for the compiler to work in.</p>
 <p><strong>Targets</strong></p>
 <p>The only thing left is to define the “action” to pass to the above function. This action is wrapped inside the GhcMonad and runs with all the settings defined above.</p>
