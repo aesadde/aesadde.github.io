@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>aesadde</title>
-        <link rel="stylesheet" type="text/css" href="../css/default.css" />
-    </head>
-    <body>
-        <div id="header">
-            <div id="logo">
-                <a href="../index.html">aesadde</a>
-            </div>
-            <div id="navigation">
-                <a href="../index.html">Home</a>
-                <a href="../about.html">About</a>
-                <a href="../contact.html">Contact</a>
-                <a href="../archive.html">Archive</a>
-            </div>
-        </div>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>aesadde - Making sense of the GHC API</title>
+    <meta name="keywords" content="programming, Haskell, GHC, compilers" />
 
-        <div id="content">
-            <h1>Making sense of the GHC API</h1>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+  </head>
 
-             <link rel="stylesheet" type="text/css" href="../css/default_syntax.css" />
+  <body>
+    <div id="header">
+      <div id="logo">
+        <a href="../index.html">aesadde</a>
+      </div>
+      <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../archive.html">Archive</a>
+        <a href="../now.html">Now</a>
+      </div>
+    </div>
+
+    <div id="content">
+      <h1>Making sense of the GHC API</h1>
+
+       <link rel="stylesheet" type="text/css" href="../css/default_syntax.css" />
 <div class="info">
     programming, Haskell, GHC, compilers
 </div>
@@ -99,7 +107,7 @@ makeModGuts f <span class="fu">=</span> <span class="kw">do</span>
       panic <span class="st">&quot;Ghc Interface: Unable to get GhcModGuts&quot;</span></code></pre></div>
 <p>The compilation generates a module graph, this is stored as a list of <a href="http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/GHC.html#t:ModSummary">ModSummary</a> from which we extract the one we need and last but not least we parse, typecheck and desugar the module into Core.</p>
 <p><strong>Final Remarks </strong></p>
-<p>The above code was largely <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/master/src/Language/Haskell/Liquid/GHC/Interface.hs#L160">taken from Liquid Haskell</a> and I spent quite a few days trying to make sense and understand the inner workings of the compiler and the GhcMonad.</p>
+<p>The above code was largely <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/master/src/Language/Haskell/Liquid/GHC/Interface.hs">taken from Liquid Haskell</a> and I spent quite a few days trying to make sense and understand the inner workings of the compiler and the GhcMonad.</p>
 <p>With the above code I am able to compile entire packages with some big exceptions:</p>
 <ul>
 <li>Modules inside packages that depend on non-exposed modules fail to compile. At first I thought this was something to do with the include/library directories, but that turned out not to be the problem. As of this writing I have yet to find a solution to this problem.<br />
@@ -112,10 +120,10 @@ makeModGuts f <span class="fu">=</span> <span class="kw">do</span>
     Posted on June 11, 2016
 </div>
 
-        </div>
-        <div id="footer">
-            Genereated with
-            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
-        </div>
-    </body>
+    </div>
+    <div id="footer">
+      Genereated with
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </div>
+  </body>
 </html>
