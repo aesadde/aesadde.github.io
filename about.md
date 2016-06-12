@@ -1,6 +1,5 @@
 ---
-title: aesadde's blog
-theme: default
+title: About
 ---
 
 This is a simple website where I plan to publish thoughts, comments, and other

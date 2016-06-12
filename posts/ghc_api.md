@@ -4,6 +4,7 @@ published:      2016-06-11
 title: Making sense of the GHC API
 author: Alberto Sadde
 tags: programming, Haskell, GHC, compilers
+metaKeywords: test
 theme: default_syntax
 ---
 **Introduction**
@@ -192,7 +193,7 @@ typecheck and desugar the module into Core.
 **Final Remarks **
 
 The above code was largely [taken from Liquid
-Haskell](https://github.com/ucsd-progsys/liquidhaskell/blob/master/src/Language/Haskell/Liquid/GHC/Interface.hs#L160) and
+Haskell](https://github.com/ucsd-progsys/liquidhaskell/blob/master/src/Language/Haskell/Liquid/GHC/Interface.hs) and
 I spent quite a few days trying to make sense and understand the inner
 workings of the compiler and the GhcMonad.
 
