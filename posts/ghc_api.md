@@ -24,7 +24,7 @@ tackle the problem I am trying to solve.
 
 **Extracting Core from Packages**
 
-For my masters thesis I am trying to build a query Engine for Haskell
+for my masters thesis I am trying to build a query Engine for Haskell
 functions/modules/packages.
 In particular I am interested in knowing which functions are called the
 most inside a package and inside a module in order to get some useful
