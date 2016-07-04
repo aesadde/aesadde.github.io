@@ -11,9 +11,9 @@ theme:        default_syntax
 **Introduction**
 
 While very concise and powerful, GHC's intermediate language, Core is very rich
-and hard to tame, at times. This post is about my quest quest to understand and
+and hard to tame, at times. This post is about my quest to understand and
 manipulate Core while implementing an abstract machine to interpret the language
-(more on this maybe later).
+(more on which *maybe* later).
 
 I will first describe Core in its latest incarnation and motivate the need for
 understanding and using it.  Then I will discuss my endevaours using it and go
@@ -21,7 +21,7 @@ over some of the difficulties I encountered while using it.
 
 **What is GHC Core**
 
-Like many modern compilers the GHC Haskell compiler is built as a pipeline of
+Like many modern compilers the Glasgow Haskell compiler (GHC) is built as a pipeline of
 consecutive program transformations. [While we won't go over the compiler in
 details](http://www.sciencedirect.com/science/article/pii/S0167642397000294),
 GHC's pipeline parses, typechecks, desugar and finally simplifies the code.
@@ -29,7 +29,7 @@ When desugaring the code, GHC converts all plain Haskell source code into a much
 simpler language, GHC Core.
 
 Core is an explicitly typed functional language based on [System Fc](http://research.microsoft.com/en-us/um/people/simonpj/papers/ext-f/tldi22-sulzmann-with-appendix.pdf),
-a variant of System Fw with equality constraints and coercions. In GHC, Core is
+a "variant of System Fw with equality constraints and coercions. In GHC, Core is
 indeed a very simple language:
 
 ```haskell
@@ -68,20 +68,23 @@ much simpler than pure Haskell, applying transformations to a Core
 program should be a much simpler task. So simple, in fact, that GHC provides an
 [API](http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/GhcPlugins.html)
 so that developers can write their own [compiler plugins](https://downloads.haskell.org/~ghc/7.10.3/docs/html/users_guide/compiler-plugins.html).
-This is a great deal given that we can simply insert our plugin at any stage
-during the optimization pipeline to apply the transformation we want. There are
-several good examples such as [the Herbie plugin](https://github.com/mikeizbicki/HerbiePlugin#herbie-ghc-plugin) that "improves the numerical stability of Haskell programs", or
+This is a great deal given that we can insert our plugin at any stage
+of the optimization pipeline to apply the transformation(s) we want.
+
+There are several good examples of plugins such as [the Herbie
+plugin](https://github.com/mikeizbicki/HerbiePlugin#herbie-ghc-plugin) that
+"improves the numerical stability of Haskell programs", or
 [this](https://github.com/thoughtpolice/strict-ghc-plugin) plugin which enables
 to make functions  (previously annotated) strict.
 
-** Understanding Core **
+**Understanding Core**
 
 Despite its simplicity, taming Core can be hard.
 
 First of all, while there is an API, the documentation is very poor and there is
 a generalized lack of examples. This is understandable (up to a point) given
 that writing compiler plugins is not a common task and something that not even
-the most experienced Haskell programmers would do on a normal day.
+the most experienced Haskell programmers would do on a normal day (I guess).
 
 The most up to date description of the language, as far as I am aware is ["An
 external representation of GHC Core"](https://downloads.haskell.org/~ghc/6.12.2/docs/core.pdf), a description of Core as used in GHC 6.10.
@@ -130,9 +133,23 @@ end Rec }
 ```
 
 This code dump contains a lot of information about the Haskell source code but, the
-untrained developer will have a hard time to deciphering all the bits and pieces
+untrained developer will have a hard time deciphering all the bits and pieces
 of this text. Since my attempt here is not to teach you the "basics" of Core but
 rather, understanding how to manipulate it, you can check [Stephen Diehl's
 introduction to Core](http://dev.stephendiehl.com/hask/#core) to get you
 started.
 
+**Playing with Core**
+
+We are now ready to play with the language.
+
+Core is defined in the [CoreSyn module](http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/CoreSyn.html#t:Arg).
+An easy way to get started is to simply import the [GhcPlugins]() which exports
+all the necessary bits and pieces for us to play with Core and build actual Core
+plugins.
+
+
+-- mention that it is hard to create CoreExpr from scratch given all the details
+that we need to deal with (like creating Ids).
+-- Also say something about the interpreter that used to exist and end it there,
+I still don't think many people are interested in this bit.
