@@ -1,6 +1,6 @@
 ---
 kind:         article
-published:    2016-06-29
+published:    2016-07-07
 title:        Working with GHC Core
 author:       Alberto Sadde
 tags:         programming, Haskell, GHC, compilers
@@ -8,23 +8,24 @@ metaKeywords: test
 theme:        default_syntax
 ---
 
-**Introduction**
+## Introduction
 
 While very concise and powerful, GHC's intermediate language, Core is very rich
-and hard to tame, at times. This post is about my quest to understand and
+and hard to tame. This post is about my quest to understand and
 manipulate Core while implementing an abstract machine to interpret the language
 (more on which *maybe* later).
 
 I will first describe Core in its latest incarnation and motivate the need for
-understanding and using it.  Then I will discuss my endevaours using it and go
-over some of the difficulties I encountered while using it.
+understanding and using it.  Then I will discuss my endeavours while using the
+language. Finally I will go over some of the difficulties I encountered along
+the way.
 
-**What is GHC Core**
+## What is GHC Core
 
 Like many modern compilers the Glasgow Haskell compiler (GHC) is built as a pipeline of
 consecutive program transformations. [While we won't go over the compiler in
 details](http://www.sciencedirect.com/science/article/pii/S0167642397000294),
-GHC's pipeline parses, typechecks, desugar and finally simplifies the code.
+GHC's pipeline parses, typechecks, desugars and finally simplifies the code.
 When desugaring the code, GHC converts all plain Haskell source code into a much
 simpler language, GHC Core.
 
@@ -61,13 +62,13 @@ data Bind b = NonRec b (Expr b)
 a Haskell program gets desugared into a `CoreProgram` which is simply a synonym
 for `[CoreBind]`, which in turn is a synonym for `Bind CoreBndr` where `type CoreBndr = Var`.
 
-**GHC Plugins**
+## GHC Plugins
 
 The importance of this language lies in its simplicity: since it is
 much simpler than pure Haskell, applying transformations to a Core
 program should be a much simpler task. So simple, in fact, that GHC provides an
 [API](http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/GhcPlugins.html)
-so that developers can write their own [compiler plugins](https://downloads.haskell.org/~ghc/7.10.3/docs/html/users_guide/compiler-plugins.html).
+to enable developers to write their own [compiler plugins](https://downloads.haskell.org/~ghc/7.10.3/docs/html/users_guide/compiler-plugins.html).
 This is a great deal given that we can insert our plugin at any stage
 of the optimization pipeline to apply the transformation(s) we want.
 
@@ -77,11 +78,11 @@ plugin](https://github.com/mikeizbicki/HerbiePlugin#herbie-ghc-plugin) that
 [this](https://github.com/thoughtpolice/strict-ghc-plugin) plugin which enables
 to make functions  (previously annotated) strict.
 
-**Understanding Core**
+## Understanding Core
 
 Despite its simplicity, taming Core can be hard.
 
-First of all, while there is an API, the documentation is very poor and there is
+First of all, while there is an API, the documentation is poor and there is
 a generalized lack of examples. This is understandable (up to a point) given
 that writing compiler plugins is not a common task and something that not even
 the most experienced Haskell programmers would do on a normal day (I guess).
@@ -102,7 +103,7 @@ factorial 0 = 1
 factorial n = n * factorial (n-1)
 ```
 
-Compiling with `ghc --make -ddump-ds Example.hs` gives us the following:
+Compiling with `ghc -c -ddump-ds Example.hs` gives us the following:
 ```haskell
 ==================== Desugar (after optimization) ====================
 Result size of Desugar (after optimization)
@@ -139,17 +140,144 @@ rather, understanding how to manipulate it, you can check [Stephen Diehl's
 introduction to Core](http://dev.stephendiehl.com/hask/#core) to get you
 started.
 
-**Playing with Core**
+## Playing with Core
 
 We are now ready to play with the language.
 
-Core is defined in the [CoreSyn module](http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/CoreSyn.html#t:Arg).
-An easy way to get started is to simply import the [GhcPlugins]() which exports
+Core is defined in the [CoreSyn module](http://downloads.haskell.org/~ghc/8.0.1/docs/html/libraries/ghc-8.0.1/CoreSyn.html).
+An easy way to get started is to simply import the [GhcPlugins](http://downloads.haskell.org/~ghc/8.0.1/docs/html/libraries/ghc-8.0.1/GhcPlugins.html) which exports
 all the necessary bits and pieces for us to play with Core and build actual Core
 plugins.
 
 
--- mention that it is hard to create CoreExpr from scratch given all the details
-that we need to deal with (like creating Ids).
--- Also say something about the interpreter that used to exist and end it there,
-I still don't think many people are interested in this bit.
+## Manipulating Core
+
+Manipulating `CoreExprs` is not difficult. Most of the time we can simply
+pattern match on the expressions we want to manipulate. For example, I am
+building a (very rudimentary) abstract machine that interprets `CoreExprs` so I
+can check if an expression is a value (i.e. a Lambda expression or a Literal)
+as follows:
+
+```haskell
+isCoreValue :: CoreExpr -> Bool
+isCoreValue x = case x of
+    (Lam _ _) -> True
+    (Lit _)   -> True
+    _         -> False
+```
+
+Or I can perform substitution inside expressions:
+
+```haskell
+subst :: CoreExpr -> Id -> CoreExpr -> CoreExpr
+subst y x t =
+  case t of
+    Var _x                    -> if x == _x then y else t -- base case for substitution
+    Lam z _t                  -> Lam z $ subst y x _t
+    App m arg                 -> App (subst y x m) (subst y x arg)
+    Case exp b t alts         -> Case (subst y x exp) b t (map sub alts)
+    Tick tickish exp          -> Tick tickish (subst y x exp)
+    _                         -> t
+    where sub (alt, bs, exp) = (alt, bs, subst y x exp)
+```
+
+
+## Creating Core
+
+While the above examples are straightforward, there might be times when we need
+to create a `CoreExpr` from scratch.
+
+For the implementation of my abstract machine, I need to prove certain algebra
+laws. I could write the laws in Haskell, generate the Core and try to interpret
+them but it would be much easier if I could write a `CoreExpr` in a file, say
+
+```haskell
+core_id = (Lam x (Var x))
+```
+
+and interpret that file directly without the need to go through Haskell.
+
+It turns out that around 2008 there was a [Core
+interpreter in
+GHC](https://phabricator.haskell.org/diffusion/GHC/browse/master/utils/ext-core/Language/Core/Interp.hs;78c209010058cd7669781de92068b64dd32caaea),
+but for some reasons (probably not enough interest in the area? too hard to
+maintain?) it seized to exist soon after.
+
+So, we either need to go through Haskell in order to get `CoreExprs` we can
+manipulate, or we can attempt to use the API to create some for us. I did just
+that, and while I think there is probably a better/easier way, it gets the job
+done, for now at least. Here is we could recreate the above `core_id` function:
+```haskell
+-- (\x -> x)
+core_id :: CoreExpr
+core_id = Lam (buildId "x") (Var $ buildId "x")
+
+-- | Builds an Id with varName
+buildId varName = mkGlobalVar VanillaId name typ vanillaIdInfo
+  where
+    name           = mkInternalName dunique (varOccName varName) noSrcSpan
+    dunique        = mkUnique '_' 0
+    varOccName var = mkVarOcc var
+    typ            = mkTyVarTy tyvar
+    tyvar          = mkTyVar name anyKind
+```
+
+The above is more complicated that I thought it would be. As we saw above, a
+Core `Var` has an `Id` which contains a
+lot of information generated by the compiler. Here is its declaration:
+```haskell
+-- | Essentially a typed 'Name', that may also contain some additional information
+-- about the 'Var' and it's use sites.
+data Var
+  = TyVar {  -- Type and kind variables
+             -- see Note [Kind and type variables]
+        varName    :: !Name,
+        realUnique :: FastInt,       -- Key for fast comparison
+                                     -- Identical to the Unique in the name,
+                                     -- cached here for speed
+        varType    :: Kind           -- ^ The type or kind of the 'Var' in question
+ }
+
+  | TcTyVar {                           -- Used only during type inference
+                                        -- Used for kind variables during
+                                        -- inference, as well
+        varName        :: !Name,
+        realUnique     :: FastInt,
+        varType        :: Kind,
+        tc_tv_details  :: TcTyVarDetails }
+
+  | Id {
+        varName    :: !Name,
+        realUnique :: FastInt,
+        varType    :: Type,
+        idScope    :: IdScope,
+        id_details :: IdDetails,        -- Stable, doesn't change
+        id_info    :: IdInfo }          -- Unstable, updated by simplifier
+```
+
+So, by browsing through the API and testing pretty much all the functions
+(since, as I said above the documentation is almost nonexistent) I managed to
+build an `Id` with the minimum amount of effort required to prove the laws in my
+algebra, not without hitting some problems first.
+
+In fact, every [Name](http://downloads.haskell.org/~ghc/8.0.1/docs/html/libraries/ghc-8.0.1/Name.html) contains
+a `Unique` identifier that is "used in many places in GHC for fast ordering and
+equality tests". This means that if we are not careful we could end up with
+different `CoreExprs` being equal during an equality check!
+To solve this we need to generate the `Uniques` from a `UniqSupply` value,
+complicating things even more.
+
+
+## Conclusion
+
+All the above reflects what I have been doing for the past month or so. Dealing
+with Core can be hard and complicated but it is also a lot of fun really trying
+to understand what happens inside GHC.
+
+I am not sure if there are easier/better ways to deal with Core but so far as I
+know there are not many projects that attempt to generate Core from scratch,
+other than the discontinued interpreter I've only come across projects (plugins)
+that manipulate Core programs that are generated directly by the compiler.
+
+*(I hope to update this post, or make new ones, as time goes by and my knowledge
+of the language and its internals (hopefully) grows.)*
