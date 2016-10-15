@@ -31,6 +31,26 @@ main = hakyll $ do
             >>= loadAndApplyTemplate "templates/default.html"  (metaKeywordContext    <> postCtx)
             >>= relativizeUrls
 
+    match "old-now/*.md" $ do
+        route $ setExtension "html"
+        compile $ pandocCompiler
+            >>= saveSnapshot "content"
+            >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> defaultContext)
+            >>= relativizeUrls
+
+    create ["old-now.html"] $ do
+      route idRoute
+      compile $ do
+        nows <- recentFirst =<< loadAll "old-now/*"
+        let archiveCtx =
+              listField "nows" postCtx (return nows) <>
+              constField "title" "Archives"            <>
+              defaultContext
+
+        makeItem ""
+            >>= loadAndApplyTemplate "templates/old-now.html" (metaKeywordContext     <> archiveCtx)
+            >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> archiveCtx)
+            >>= relativizeUrls
     create ["archive.html"] $ do
         route idRoute
         compile $ do

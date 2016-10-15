@@ -1,22 +1,24 @@
 ---
 title: What I'm doing now
 ---
-Until the 30 of August I am mostly working on my masters thesis at Oxford
-University. I am trying to blog about my progress on it here.
 
+I just graduated from an MSc at Oxford and I'm currently looking for my
+first full-time job.
 
-Other things I am doing now:
+When not panicking about the job-hunting and interview process I keep myself busy
+as follows:
 
-* I am trying to figure out my next trip. Any ideas?
-* I am trying to figure out what to do after I submit my thesis (get a job maybe?).
-* I am trying to read at least 25 pages of non-university related material.
-  I've recently entered a "Facebook" book exchange which should provide plenty
-  of good books to read in the coming weeks.
+* I am designing a query and stats engine for Haskell packages (more on this
+later).
 
-This sums up what I am currently doing. I'll update this site once my priorities
-changes or if I engage in other interesting activities!
+* I am improving my knowledge of Haskell (I'm learning more about type systems and Category Theory).
+
+* I am playing with different ways to implement a digital  ["notecard
+system"](http://ryanholiday.net/the-notecard-system-the-key-for-remembering-organizing-and-using-everything-you-read/).
 
 # This Page
-The last update on this page was on  July 7, 2016.
+The last update on this page was on  October 15, 2016.
 
 If you want to know more about "Now" pages [click here](http://nownownow.com/about).
+
+You can also check my previous [now-pages](/old-now.html)
