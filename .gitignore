@@ -20,3 +20,6 @@ cabal.sandbox.config
 _cache/
 _site/
 tags
+
+# Mac finder files and hidden folders
+.DS_Store
