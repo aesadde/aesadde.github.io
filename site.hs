@@ -66,19 +66,13 @@ main = hakyll $ do
                 >>= relativizeUrls
 
     --- Homepage
-    match "index.html" $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let indexCtx =
-                    listField "posts" postCtx (return posts) <>
-                    constField "title" "Home"                <>
-                    defaultContext
-
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> indexCtx)
-                >>= relativizeUrls
+    match "index.md" $ do
+        route $ setExtension "html"
+        let indexCtx = constField "title" "Home" <> defaultContext
+        compile $ pandocCompiler
+                    >>= applyAsTemplate indexCtx
+                    >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> indexCtx)
+                    >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
 

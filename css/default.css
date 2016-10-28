@@ -1,57 +1,53 @@
 body {
-    color: black;
-    font-size: 16px;
-    margin: 0px auto 0px auto;
-    width: 800px;
+  color: black;
+  font-size: 16px;
+  margin: 0px auto 0px auto;
+  max-width:50em;
+  max-height:10em;
+}
+
+div#content {
+  position:fixed;
+  top: 30%;
+  left: 50%;
+  max-width:50em;
+  max-height:10em;
+  margin-top: -9em; /*set to a negative number 1/2 of your height*/
+  margin-left: -25em; /*set to a negative number 1/2 of your width*/
+
 }
 
 div#header {
-    border-bottom: 2px solid black;
-    margin-bottom: 30px;
-    padding: 12px 0px 12px 0px;
+  border-bottom: 2px solid black;
+  margin-bottom: 30px;
+  padding: 12px 0px 12px 0px;
 }
 
-div#logo a {
-    color: black;
-    float: left;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
+div#navigation {
+  text-align: center;
 }
 
-div#header #navigation {
-    text-align: right;
-}
-
-div#header #navigation a {
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
-    margin-left: 12px;
-    text-decoration: none;
-    text-transform: uppercase;
+div #navigation a {
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 12px;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 div#footer {
-    border-top: solid 2px black;
-    color: #555;
-    font-size: 12px;
-    margin-top: 30px;
-    padding: 12px 0px 12px 0px;
-    text-align: right;
+  color: #555;
+  font-size: 12px;
+  margin-top: 30px;
+  padding: 12px 0px 12px 0px;
+  text-align: right;
 }
 
 h1 {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 h2 {
-    font-size: 20px;
+  font-size: 20px;
 }
-
-div.info {
-    color: #555;
-    font-size: 14px;
-    font-style: italic;
-}
-
