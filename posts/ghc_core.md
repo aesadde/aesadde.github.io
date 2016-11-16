@@ -3,7 +3,7 @@ kind:         article
 published:    2016-07-07
 title:        Working with GHC Core
 author:       Alberto Sadde
-tags:         programming, Haskell, GHC, compilers
+info:         programming, Haskell, GHC, compilers
 metaKeywords: test
 theme:        default_syntax
 ---

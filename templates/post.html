@@ -1,8 +1,7 @@
- <link rel="stylesheet" type="text/css" href="/css/$theme$.css" />
-$if(tags)$<div class="info">
-    $tags$
-</div>$endif$
-$body$
-<div class="info">
-    Posted on $date$
+<div id="post">
+  <div id="title"> $title$ </div
+  $if(tags)$ <div class="tag"> Keywords: $tags$ </div> $endif$
+  <div id="date"> Posted on $date$ </div>
 </div>
+
+$body$

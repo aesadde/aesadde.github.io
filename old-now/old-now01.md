@@ -1,6 +1,6 @@
 ---
 published:      2016-07-07
-title: What I'm doing now (07/07/16 - 15/10/16)
+title: 07/07/16 - 15/10/16
 author: Alberto Sadde
 ---
 Until the 30 of August I am mostly working on my masters thesis at Oxford

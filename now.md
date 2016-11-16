@@ -1,24 +1,16 @@
 ---
 title: What I'm doing now
+info: <a href="./index.html"> Alberto Sadde </a>
 ---
 
-I just graduated from an MSc at Oxford and I'm currently looking for my
-first full-time job.
+This is a [Now page](http://nownownow.com/about). It details what I am
+currently focused and working on.
 
-When not panicking about the job-hunting and interview process I keep myself busy
-as follows:
+As of 15/11/2016 this is what I've been up to:
 
-* I am designing a query and stats engine for Haskell packages (more on this
-later).
+* I am taking some time off in Africa (my first time in the continent) while I decide what to do next.
 
-* I am improving my knowledge of Haskell (I'm learning more about type systems and Category Theory).
+* I am improving my knowledge of Haskell and Functional Programming (I'm learning more about type systems and Category Theory). I've been
+watching Bartosz Milewski's Category Theory [lectures](https://www.youtube.com/watch?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&v=I8LbkfSSR58).
 
-* I am playing with different ways to implement a digital  ["notecard
-system"](http://ryanholiday.net/the-notecard-system-the-key-for-remembering-organizing-and-using-everything-you-read/).
-
-# This Page
-The last update on this page was on  October 15, 2016.
-
-If you want to know more about "Now" pages [click here](http://nownownow.com/about).
-
-You can also check my previous [now-pages](/old-now.html)
+* I am redesigning my personal website using Hakyll.

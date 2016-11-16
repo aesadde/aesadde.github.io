@@ -3,7 +3,7 @@ kind:           article
 published:      2016-06-11
 title: Making sense of the GHC API
 author: Alberto Sadde
-tags: programming, Haskell, GHC, compilers
+info: programming, Haskell, GHC, compilers
 metaKeywords: test
 theme: default_syntax
 ---

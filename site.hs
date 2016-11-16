@@ -2,9 +2,15 @@
 
 import           Data.Monoid ((<>))
 import           Hakyll
---------------------------------------------------------------------------------
+import           Data.Maybe (fromMaybe)
+import qualified Data.Map as M
+
 main :: IO ()
 main = hakyll $ do
+
+-- General Matches ------------------------------------------------------------
+    match "templates/*" $ compile templateCompiler
+
     match "images/*" $ do
         route   idRoute
         compile copyFileCompiler
@@ -17,81 +23,75 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
-    match (fromList ["now.md", "about.md","contact.md"]) $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> defaultContext)
-            >>= relativizeUrls
-
-    match "posts/*.md" $ do
+-- Home -----------------------------------------------------------------------
+    match "index.md" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
-            >>= saveSnapshot "content"
-            >>= loadAndApplyTemplate "templates/post.html"     (metaKeywordContext <> postCtx)
-            >>= loadAndApplyTemplate "templates/default.html"  (metaKeywordContext    <> postCtx)
+                    >>= loadAndApplyTemplate "templates/default.html" pageCtx
+                    >>= relativizeUrls
+
+-- Now pages ------------------------------------------------------------------
+    match "now.md" $ do
+        route   $ setExtension "html"
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/default.html" pageCtx
             >>= relativizeUrls
 
     match "old-now/*.md" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
             >>= saveSnapshot "content"
-            >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> defaultContext)
+            >>= loadAndApplyTemplate "templates/default.html" pageCtx
             >>= relativizeUrls
 
     create ["old-now.html"] $ do
       route idRoute
       compile $ do
         nows <- recentFirst =<< loadAll "old-now/*"
-        let archiveCtx =
+        let oldNewCtx =
               listField "nows" postCtx (return nows) <>
-              constField "title" "Archives"            <>
-              defaultContext
-
+              constField "title" "Old-Now"            <>
+              pageCtx
         makeItem ""
-            >>= loadAndApplyTemplate "templates/old-now.html" (metaKeywordContext     <> archiveCtx)
-            >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> archiveCtx)
+            >>= loadAndApplyTemplate "templates/old-now.html" oldNewCtx
+            >>= loadAndApplyTemplate "templates/default.html" oldNewCtx
             >>= relativizeUrls
-    create ["archive.html"] $ do
+
+-- Blog -----------------------------------------------------------------------
+    create ["blog.html"] $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
-            let archiveCtx =
+            let blogCtx =
                     listField "posts" postCtx (return posts) <>
-                    constField "title" "Archives"            <>
-                    defaultContext
-
+                    constField "title" "Blog"            <>
+                    constField "info" "<a href=\"./index.html\"> Alberto Sadde</a>" <>
+                    pageCtx
             makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" (metaKeywordContext     <> archiveCtx)
-                >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> archiveCtx)
+                >>= loadAndApplyTemplate "templates/archive.html" blogCtx
+                >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
 
-    --- Homepage
-    match "index.md" $ do
+    match "posts/*.md" $ do
         route $ setExtension "html"
-        let indexCtx = constField "title" "Home" <> defaultContext
         compile $ pandocCompiler
-                    >>= applyAsTemplate indexCtx
-                    >>= loadAndApplyTemplate "templates/default.html" (metaKeywordContext     <> indexCtx)
-                    >>= relativizeUrls
+            >>= saveSnapshot "content"
+            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= relativizeUrls
 
-    match "templates/*" $ compile templateCompiler
+-------------------------------------------------------------------------------
+-- Contexts -------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
+-- | Custom default Context for the site
+pageCtx = infoContext <> defaultContext
 
---------------------------------------------------------------------------------
--- Contexts --------------------------------------------------------------------
---------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" <>
-    defaultContext
---------------------------------------------------------------------------------
+    pageCtx
 
--- add metadata keywords to html file
-metaKeywordContext :: Context String
-metaKeywordContext = field "metaKeywords" $ \item -> do
-  tags <- getMetadataField (itemIdentifier item) "tags"
-  return $ maybe "" showMetaTags tags
-    where
-      showMetaTags :: String -> String
-      showMetaTags t = "<meta name=\"keywords\" content=\"" ++ t ++ "\"/>\n"
---------------------------------------------------------------------------------
+infoContext :: Context a
+infoContext = field "info" $ \item -> do
+    metadata <- getMetadata (itemIdentifier item)
+    return $ fromMaybe "" $ M.lookup "info" metadata
