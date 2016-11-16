@@ -6,7 +6,7 @@ Hi, my name is Alberto Sadde (aesadde). I recently graduated from the MSc in
 Computer Science at Oxford University where I focused Functional Programming
 and got interested in Machine Learning.
 
-I am currently interested in these areas as well as more general software
+I am interested in these areas as well as general software
 engineering. I am always looking for opportunities to further my technical
 abilities and gain managerial skills. Feel free to <a
 href="mailto:albertosadde@gmail.com">contact me</a>.

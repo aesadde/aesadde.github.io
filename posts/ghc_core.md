@@ -1,6 +1,7 @@
 ---
 kind:         article
 published:    2016-07-07
+edited:       2016-11-16
 title:        Working with GHC Core
 author:       Alberto Sadde
 info:         programming, Haskell, GHC, compilers
@@ -279,5 +280,5 @@ know there are not many projects that attempt to generate Core from scratch,
 other than the discontinued interpreter I've only come across projects (plugins)
 that manipulate Core programs that are generated directly by the compiler.
 
-*(I hope to update this post, or make new ones, as time goes by and my knowledge
-of the language and its internals (hopefully) grows.)*
+<!-- *(I hope to update this post, or make new ones, as time goes by and my knowledge -->
+<!-- of the language and its internals (hopefully) grows.)* -->

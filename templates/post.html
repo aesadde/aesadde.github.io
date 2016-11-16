@@ -1,7 +1,10 @@
-<div id="post">
-  <div id="title"> $title$ </div
-  $if(tags)$ <div class="tag"> Keywords: $tags$ </div> $endif$
-  <div id="date"> Posted on $date$ </div>
+<div id=post>
+  $body$
+  <div id=postDate>
+    $date$
+  </div>
+  <div id="postBar">
+    <a href="/blog.html"> Go Back </a>
+    <a href="/index.html"> Home </a>
+  </div>
 </div>
-
-$body$
