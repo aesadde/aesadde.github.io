@@ -5,37 +5,34 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Alberto Sadde">
+    <meta name="description" content="Alberto Sadde's personal webpage.">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>aesadde - Making sense of the GHC API</title>
-    <meta name="keywords" content="programming, Haskell, GHC, compilers" />
 
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>Making sense of the GHC API</title>
     <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <!-- <link href="http://fonts.googleapis.com/css?family=Lato:300,700,300italic,700italic" rel="stylesheet" type="text/css"> -->
   </head>
 
   <body>
     <div id="header">
-      <div id="logo">
-        <a href="../index.html">aesadde</a>
+      <div id="headerWrapper">
+        <a id="name" href="../posts/ghc_api.html"> Making sense of the GHC API </a>
+        <div id="info">programming, Haskell, GHC, compilers</div>
       </div>
       <div id="navigation">
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-        <a href="../archive.html">Archive</a>
+        <a href="../blog.html">Blog</a>
         <a href="../now.html">Now</a>
+        <a href="../projects.html">Projects</a>
+        <a href="https://github.com/aesadde" target="_blank">GitHub</a>
+        <a href="https://uk.linkedin.com/in/aesadde" target="_blank">LinkedIn</a>
       </div>
     </div>
-
-    <div id="content">
-      <h1>Making sense of the GHC API</h1>
-
-       <link rel="stylesheet" type="text/css" href="../css/default_syntax.css" />
-<div class="info">
-    programming, Haskell, GHC, compilers
-</div>
-<p><strong>Introduction</strong></p>
+    <div id="wrapper">
+      <div id="content">
+        <div>
+          <div id="post">
+  <p><strong>Introduction</strong></p>
 <p>Being already at the 8.01 release of the GHC compiler, one would expect to find a lot of information and examples showing how to use the GHC API. But this doesn’t seem to be the present case. While there exist some entries in the <a href="https://wiki.haskell.org/GHC/As_a_library">Haskell Wiki</a> and a somewhat outdated <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/API">commentary</a>, there doesn’t seem to be much more explained out there.</p>
 <p>I’ve read other blog posts that try to explain bits and pieces (look for links at the bottom of the above Haskell Wiki entry) but none of them tackle the problem I am trying to solve.</p>
 <p><strong>Extracting Core from Packages</strong></p>
@@ -117,14 +114,28 @@ makeModGuts f <span class="fu">=</span> <span class="kw">do</span>
 <li>Modules that contain .hsc files fail to compile. For now I have found  a manual solution: compile each .hsc file using the command line tool <code>hsc2hs</code>. </li>
 </ul>
 <p>If you know how to improve the above code or how to solve the problems I listed here, please do get in touch!</p>
-<div class="info">
-    Posted on June 11, 2016
+  <div id="postDate">
+    June 11, 2016
+  </div>
+  <div id="postBar">
+    <a href="../blog.html"> Go Back </a>
+    <a href="../index.html"> Home </a>
+  </div>
 </div>
 
+        </div>
+      </div>
     </div>
-    <div id="footer">
-      Genereated with
-      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
-    </div>
+<!-- JavaScript -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-19951364-4', 'auto');
+
+ga('send', 'pageview');
+    </script>
   </body>
 </html>
