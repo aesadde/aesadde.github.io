@@ -1,7 +1,8 @@
 ---
 title: What I'm doing now
-info: <a href="./index.html"> Alberto Sadde </a>
 ---
+
+<div id="main-content">
 
 This is a [Now page](http://nownownow.com/about). It details what I am
 currently focused and working on.
@@ -17,3 +18,5 @@ watching Bartosz Milewski's Category Theory [lectures](https://www.youtube.com/w
 
 
 You can also check my previous [now pages](./old-now.html)
+
+</div>

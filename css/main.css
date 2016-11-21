@@ -1,0 +1,9 @@
+div#main-content {
+  margin:auto;
+  width:490px;
+  margin-top:151px
+}
+
+div#main-content a {
+  font-weight:bold
+}

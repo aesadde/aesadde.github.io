@@ -2,6 +2,9 @@
 title: Alberto Sadde
 info: Venezuelan, Computer Scientist.
 ---
+
+<div id="main-content">
+
 Hi, my name is Alberto Sadde (aesadde). I recently graduated from the MSc in
 Computer Science at Oxford University where I focused Functional Programming
 and got interested in Machine Learning.
@@ -30,3 +33,5 @@ especially if they are outdoor or if there is water involved. He is always
 trying to play [Underwater
 Rugby](https://en.wikipedia.org/wiki/Underwater_rugby) and loves introducing
 people to the sport.
+
+</div>

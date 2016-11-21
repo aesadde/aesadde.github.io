@@ -55,9 +55,7 @@ main = hakyllWith hakyllConf $ do
       route $ setExtension "html"
       compile $ pandocCompiler
           >>= saveSnapshot "content"
-          >>= loadAndApplyTemplate "templates/default.html"
-                (constField "info" "<a href=\"./index.html\"> Alberto Sadde</a>"
-                 <> pageCtx)
+          >>= loadAndApplyTemplate "templates/default.html" pageCtx
           >>= relativizeUrls
 
     create ["old-now.html"] $ do
@@ -67,7 +65,6 @@ main = hakyllWith hakyllConf $ do
         let oldNewCtx =
               listField "nows" postCtx (return nows)
               <> constField "title" "Old-Now"
-              <> constField "info" "<a href=\"./index.html\"> Alberto Sadde</a>"
               <> pageCtx
         makeItem ""
           >>= loadAndApplyTemplate "templates/old-now.html" oldNewCtx
@@ -82,10 +79,9 @@ main = hakyllWith hakyllConf $ do
           let blogCtx =
                 listField "posts" postCtx (return posts)
                 <> constField "title" "Blog"
-                <> constField "info" "<a href=\"./index.html\"> Alberto Sadde</a>"
                 <> pageCtx
           makeItem ""
-            >>= loadAndApplyTemplate "templates/archive.html" blogCtx
+            >>= loadAndApplyTemplate "templates/blog.html" blogCtx
             >>= loadAndApplyTemplate "templates/default.html" blogCtx
             >>= relativizeUrls
 
@@ -105,7 +101,7 @@ main = hakyllWith hakyllConf $ do
 
 -- | Custom default Context for the site
 pageCtx :: Context String
-pageCtx = infoContext <> defaultContext
+pageCtx = defaultContext
 
 postCtx :: Context String
 postCtx = dateField "date" "%B %e, %Y" <> pageCtx

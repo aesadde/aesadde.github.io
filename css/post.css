@@ -1,1 +1,15 @@
-div#postBar{width:490px;position:relative;margin:auto}
+div#post {
+  margin:auto;
+  width:490px;
+  margin-top:151px
+}
+
+div#post a {
+  font-weight:bold
+}
+
+div#postBar {
+  width:490px;
+  position:relative;
+  margin:auto
+}
