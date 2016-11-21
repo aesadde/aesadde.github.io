@@ -14,3 +14,6 @@ As of 15/11/2016 this is what I've been up to:
 watching Bartosz Milewski's Category Theory [lectures](https://www.youtube.com/watch?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&v=I8LbkfSSR58).
 
 * I am redesigning my personal website using Hakyll.
+
+
+You can also check my previous [now pages](./old-now.html)

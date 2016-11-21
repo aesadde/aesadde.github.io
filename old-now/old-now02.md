@@ -1,7 +1,6 @@
 ---
 published: 2016-11-15
-title: 15/10/16 - 15/11/16
-info: <a href="./index.html"> Alberto Sadde O.</a>
+title: October 15 to November 15, 2016
 ---
 
 I just graduated from an MSc at Oxford and I'm currently looking for my
@@ -18,7 +17,7 @@ later).
 * I am playing with different ways to implement a digital  ["notecard
 system"](http://ryanholiday.net/the-notecard-system-the-key-for-remembering-organizing-and-using-everything-you-read/).
 
-# This Page
+## This Page
 The last update on this page was on  October 15, 2016.
 
 If you want to know more about "Now" pages [click here](http://nownownow.com/about).

@@ -12,8 +12,8 @@ abilities and gain managerial skills. Feel free to <a
 href="mailto:albertosadde@gmail.com">contact me</a>.
 
 You can check what I've been up to recently by looking at my [Now](/now.html)
-page. Yo can also check some of my latest [Projects](/projects.html) or you can
-read my [Blog](/blog.html) where, from time to time, I share what I think and
+page. You can also check some of my latest [Projects](/projects.html) or you can
+read my [Blog](/blog.html) where from time to time I share what I think and
 write about topics and problems that I find interesting.
 
 ## Short Bio

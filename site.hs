@@ -41,7 +41,9 @@ main = hakyll $ do
       route $ setExtension "html"
       compile $ pandocCompiler
           >>= saveSnapshot "content"
-          >>= loadAndApplyTemplate "templates/default.html" pageCtx
+          >>= loadAndApplyTemplate "templates/default.html"
+                (constField "info" "<a href=\"./index.html\"> Alberto Sadde</a>"
+                 <> pageCtx)
           >>= relativizeUrls
 
     create ["old-now.html"] $ do
@@ -51,6 +53,7 @@ main = hakyll $ do
         let oldNewCtx =
               listField "nows" postCtx (return nows)
               <> constField "title" "Old-Now"
+              <> constField "info" "<a href=\"./index.html\"> Alberto Sadde</a>"
               <> pageCtx
         makeItem ""
           >>= loadAndApplyTemplate "templates/old-now.html" oldNewCtx

@@ -1,6 +1,6 @@
 ---
-published:      2016-07-07
-title: 07/07/16 - 15/10/16
+published: 2016-07-07
+title: July 07 to October 15, 2016
 author: Alberto Sadde
 ---
 Until the 30 of August I am mostly working on my masters thesis at Oxford
@@ -18,7 +18,7 @@ Other things I am doing now:
 This sums up what I am currently doing. I'll update this site once my priorities
 changes or if I engage in other interesting activities!
 
-# This Page
+## This Page
 The last update on this page was on  July 7, 2016.
 
 If you want to know more about "Now" pages [click here](http://nownownow.com/about).
