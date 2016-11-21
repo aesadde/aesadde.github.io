@@ -11,22 +11,25 @@ git stash
 git checkout develop
 
 # Build new files
-stack build && stack exec $SITE -- clean; stack exec $SITE -- build
+if stack build; then
+  stack exec $SITE -- clean; stack exec $SITE -- build
+  # Get previous files
+  git checkout -b master --track origin/master
 
-# Get previous files
-git checkout -b master --track origin/master
+  # Overwrite existing files with new files
+  cp -a _site/. .
 
-# Overwrite existing files with new files
-cp -a _site/. .
+  # Commit
+  git add -A
+  git commit -m "Publish $1"
 
-# Commit
-git add -A
-git commit -m "Publish $1"
+  # Push
+  git push origin master:master
 
-# Push
-git push origin master:master
-
-# Restoration
-git checkout develop
-git branch -D master
-git stash apply
+  # Restoration
+  git checkout develop
+  git branch -D master
+  git stash apply
+else
+  echo "Site didn't build -- didn't publish"
+fi

@@ -5,8 +5,22 @@ import           Data.Maybe (fromMaybe)
 import           Data.Monoid ((<>))
 import           Hakyll
 
+
+-- Configuration --------------------------------------------------------------
+dontIgnoreHtaccess :: String -> Bool
+dontIgnoreHtaccess ".htaccess" = False
+dontIgnoreHtaccess path        = ignoreFile defaultConfiguration path
+
+hakyllConf :: Configuration
+hakyllConf = defaultConfiguration
+             {
+               deployCommand = "./extras/deploy.sh"
+             , ignoreFile = dontIgnoreHtaccess
+}
+
+
 main :: IO ()
-main = hakyll $ do
+main = hakyllWith hakyllConf $ do
 
 -- General Rules ---------------------------------------------------------------
     match "templates/*" $ compile templateCompiler
