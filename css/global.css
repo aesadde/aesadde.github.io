@@ -20,9 +20,15 @@ a:hover, a:active, a:focus {
 ::selection { background:#FFCD00 }
 
 div#wrapper {
-  position:absolute;
+  /* position:absolute; */
   z-index:5;
-  top:0px;
+  /* top:0px; */
   width:100%;
   height:auto
+}
+
+div#footer {
+  align: right;
+  text-align: right;
+  font-size:10px;
 }

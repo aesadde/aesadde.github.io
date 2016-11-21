@@ -3,38 +3,34 @@ div#header {
   position:fixed;
   z-index:10;
   width:100%;
-  box-shadow:0px
-  0px 20px rgba(0,0,0,0.1), 0px 0px 3px
-  rgba(0,0,0,0.1);
+  box-shadow:0px 0px 20px rgba(0,0,0,0.1), 0px 0px 3px rgba(0,0,0,0.1);
   background:white
 }
 
 div#header div#headerWrapper {
   max-width:700px;
-  padding:20px 0 25px
-  0;
+  padding:20px 0 25px 0;
   margin:auto;
   position:relative;
-  background:url(images/me.png) no-repeat center
-  right
+  background:url(images/me.png) no-repeat center right;
 }
 
 div#header a#name {
   color:darkred;
   text-decoration:none;
-  font-size:34px
+  font-size:34px;
 }
 
 div#header a#name:hover {
   color:#FFCD00;
   text-decoration:none;
-  font-size:34px
+  font-size:34px;
 }
 
 div#header div#navigation {
   max-width:490px;
   margin:auto;
-  position:relative
+  position:relative;
 }
 
 div#header div#navigation a {
@@ -46,13 +42,11 @@ div#header div#navigation a {
   text-decoration:none;
   color:darkred;
   box-shadow:0px 0px
-  20px rgba(0,0,0,0.03), 0px 0px 3px rgba(0,0,0,0.03)
+  20px rgba(0,0,0,0.03), 0px 0px 3px rgba(0,0,0,0.03);
 }
 
 div#header div#navigation a:hover {
   text-decoration:none;
   background-color:#FFCD00;
-  box-shadow:0px 0px 20px
-  rgba(48,51,32,0.05), 0px 0px 20px rgba(0,0,0,0.03), 0px 0px 3px
-  rgba(0,0,0,0.03)
+  box-shadow:0px 0px 20px rgba(48,51,32,0.05), 0px 0px 20px rgba(0,0,0,0.03), 0px 0px 3px rgba(0,0,0,0.03);
 }

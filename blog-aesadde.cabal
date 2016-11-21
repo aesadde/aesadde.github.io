@@ -19,3 +19,4 @@ executable blog-aesadde
   build-depends:         base
                        , hakyll
                        , containers
+                       , pandoc

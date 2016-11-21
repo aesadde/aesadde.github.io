@@ -14,7 +14,7 @@ As of 15/11/2016 this is what I've been up to:
 * I am improving my knowledge of Haskell and Functional Programming (I'm learning more about type systems and Category Theory). I've been
 watching Bartosz Milewski's Category Theory [lectures](https://www.youtube.com/watch?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&v=I8LbkfSSR58).
 
-* I am redesigning my personal website using Hakyll.
+* I am redesigning this site using Hakyll.
 
 
 You can also check my previous [now pages](./old-now.html)
