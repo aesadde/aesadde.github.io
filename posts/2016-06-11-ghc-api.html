@@ -9,7 +9,7 @@
     <meta name="description" content="Alberto Sadde's personal webpage.">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <title>Making sense of the GHC API</title>
+    <title>aesadde | Making sense of the GHC API</title>
     <link rel="stylesheet" type="text/css" href="../css/default.css" />
     <!-- <link href="http://fonts.googleapis.com/css?family=Lato:300,700,300italic,700italic" rel="stylesheet" type="text/css"> -->
   </head>
@@ -18,7 +18,10 @@
     <div id="header">
       <div id="headerWrapper">
         <a id="name" href="../posts/2016-06-11-ghc-api.html"> Making sense of the GHC API </a>
-        <div id="info"></div>
+         
+        <div id="info">programming, Haskell</div>
+        
+        
       </div>
       <div id="navigation">
         <a href="../blog.html">Blog</a>
@@ -29,9 +32,7 @@
       </div>
     </div>
     <div id="wrapper">
-      <div id="content">
-        <div>
-          <div id="post">
+      <div id="post">
   <p><strong>Introduction</strong></p>
 <p>Being already at the 8.01 release of the GHC compiler, one would expect to find a lot of information and examples showing how to use the GHC API. But this doesn’t seem to be the present case. While there exist some entries in the <a href="https://wiki.haskell.org/GHC/As_a_library">Haskell Wiki</a> and a somewhat outdated <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/API">commentary</a>, there doesn’t seem to be much more explained out there.</p>
 <p>I’ve read other blog posts that try to explain bits and pieces (look for links at the bottom of the above Haskell Wiki entry) but none of them tackle the problem I am trying to solve.</p>
@@ -42,7 +43,7 @@
 <p><strong>The GHC API</strong></p>
 <p>I will be using GHC 7.10.3 (since all the code was tested with it. I’ll update this entry if there are significant changes once I move to GHC 8). All the documentation is available <a href="http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/index.html">here</a>.</p>
 <p>As noted in the GHC commentary (linked above), the compilation process consists of the following steps:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Create a new session</li>
 <li>Set and/or get the session’s flags.</li>
 <li>add and load the compilation targets</li>
@@ -114,20 +115,22 @@ makeModGuts f <span class="fu">=</span> <span class="kw">do</span>
 <li>Modules that contain .hsc files fail to compile. For now I have found  a manual solution: compile each .hsc file using the command line tool <code>hsc2hs</code>. </li>
 </ul>
 <p>If you know how to improve the above code or how to solve the problems I listed here, please do get in touch!</p>
-  <div id="postDate">
+  <div id="postDate" align="right">
     June 11, 2016
   </div>
-  <div id="postBar">
+  <div id="postBar" align="right">
     <a href="../blog.html"> Go Back </a>
     <a href="../index.html"> Home </a>
   </div>
 </div>
 
-        </div>
-      </div>
     </div>
-<!-- JavaScript -->
-<script>
+    <div id="footer">
+      This site is generated using <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
