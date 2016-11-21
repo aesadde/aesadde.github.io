@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Alberto Sadde">
+    <meta name="description" content="Alberto Sadde's personal webpage.">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Making sense of the GHC API</title>
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <!-- <link href="http://fonts.googleapis.com/css?family=Lato:300,700,300italic,700italic" rel="stylesheet" type="text/css"> -->
+  </head>
+
+  <body>
+    <div id="header">
+      <div id="headerWrapper">
+        <a id="name" href="../posts/ghc_api.html"> Making sense of the GHC API </a>
+        <div id="info">programming, Haskell, GHC, compilers</div>
+      </div>
+      <div id="navigation">
+        <a href="../blog.html">Blog</a>
+        <a href="../now.html">Now</a>
+        <a href="../projects.html">Projects</a>
+        <a href="https://github.com/aesadde" target="_blank">GitHub</a>
+        <a href="https://uk.linkedin.com/in/aesadde" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+    <div id="wrapper">
+      <div id="content">
+        <div>
+          <div id="post">
+  <p><strong>Introduction</strong></p>
+<p>Being already at the 8.01 release of the GHC compiler, one would expect to find a lot of information and examples showing how to use the GHC API. But this doesn’t seem to be the present case. While there exist some entries in the <a href="https://wiki.haskell.org/GHC/As_a_library">Haskell Wiki</a> and a somewhat outdated <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/API">commentary</a>, there doesn’t seem to be much more explained out there.</p>
+<p>I’ve read other blog posts that try to explain bits and pieces (look for links at the bottom of the above Haskell Wiki entry) but none of them tackle the problem I am trying to solve.</p>
+<p><strong>Extracting Core from Packages</strong></p>
+<p>for my masters thesis I am trying to build a query Engine for Haskell functions/modules/packages. In particular I am interested in knowing which functions are called the most inside a package and inside a module in order to get some useful statistics. But I am not interested in extracting this information at the source code level, rather, I am interested in extracting this information at the Core level.</p>
+<p><a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/CoreSynType">GHC Core</a> is Haskell’s intermediate language. (I hope to write an in-depth post on Core as well). For our current discussion, it suffices to say that GHC Core is a small, explicitly typed functional language. This is the language that all our source code gets <em>desugared</em> to before applying optimizations, which in GHC amount to a set of Core -&gt; Core transformations.</p>
+<p>So, what I really want is not merely compiling a Haskell package (we can use <code>stack</code> or <code>cabal</code> for this) but I want to compile and get the Core of each function defined in each module within the package and add all this information to a database on which we can make then queries and build our stats.</p>
+<p><strong>The GHC API</strong></p>
+<p>I will be using GHC 7.10.3 (since all the code was tested with it. I’ll update this entry if there are significant changes once I move to GHC 8). All the documentation is available <a href="http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/index.html">here</a>.</p>
+<p>As noted in the GHC commentary (linked above), the compilation process consists of the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>Create a new session</li>
+<li>Set and/or get the session’s flags.</li>
+<li>add and load the compilation targets</li>
+<li>Perform dependency analysis to understand what needs to be compiled first</li>
+<li>load the targets.</li>
+</ol>
+<p>We will now go through all of these steps in turn since they involve quite a lot of different functions and a lot of tweaking to get everything to compile. We have successfully managed to compile files inside packages but we have been unable to compile non-exposed modules of a package (more on this later).</p>
+<p><strong>Session</strong></p>
+<p>Since the compilation process is rather stateful, everything happens inside the <a href="http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/GHC.html#t:GhcMonad">GhcMonad</a>. Here we need to create a session and set up the environment. </p>
+<p>Luckily, session creation is handled by the <code>runGhc</code> function so we don’t really need to do anything here. This function calls <a href="http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/GHC.html#v:initGhcMonad"><code>initGhcMonad</code></a> which does all the job for us with all the standard environment set up for us.</p>
+<p><strong>Flags</strong></p>
+<p>Setting up the flags is probably the single most important step in setting up all the environment to compile the files. The <code>DynFlags</code> data structure is extensive and, depending on your needs, you might want to inspect it more closely.</p>
+<p>The code to initialize the GhcMonad session and set up the flags is given below:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">runEngingeGhc ::</span> <span class="dt">Package</span> <span class="ot">-&gt;</span> <span class="dt">GHC.Ghc</span> a <span class="ot">-&gt;</span> <span class="dt">IO</span> a
+runEngingeGhc pkg act <span class="fu">=</span>
+  GHC.defaultErrorHandler defaultFatalMessager defaultFlushOut <span class="fu">$</span>
+    withSystemTempDirectory <span class="st">&quot;engine&quot;</span> <span class="fu">$</span> \tmp <span class="ot">-&gt;</span>
+    GHC.runGhc (<span class="dt">Just</span> libdir) <span class="fu">$</span> <span class="kw">do</span>
+      df <span class="ot">&lt;-</span> GHC.getSessionDynFlags
+      <span class="kw">let</span> df' <span class="fu">=</span> df { importPaths  <span class="fu">=</span> nub <span class="fu">$</span> includeDirs pkg <span class="fu">++</span> importPaths df
+                   , libraryPaths <span class="fu">=</span> nub <span class="fu">$</span> includeDirs pkg <span class="fu">++</span> libraryPaths df
+                   , includePaths <span class="fu">=</span> nub <span class="fu">$</span> includeDirs pkg <span class="fu">++</span> includePaths df
+                   , packageFlags <span class="fu">=</span> [ <span class="dt">ExposePackage</span> (<span class="dt">PackageArg</span> <span class="st">&quot;ghc-prim&quot;</span>)
+                                                    (<span class="dt">ModRenaming</span> <span class="dt">True</span> [])
+                                    , <span class="dt">ExposePackage</span> (<span class="dt">PackageArg</span> <span class="st">&quot;ghc-paths&quot;</span>)
+                                                    (<span class="dt">ModRenaming</span> <span class="dt">True</span> [])]
+                                    <span class="fu">++</span> packageFlags df
+                   , ghcLink      <span class="fu">=</span> <span class="dt">LinkInMemory</span>
+                   , ghcMode      <span class="fu">=</span> <span class="dt">CompManager</span>
+                   , objectDir    <span class="fu">=</span> <span class="dt">Just</span> tmp
+                   , hiDir        <span class="fu">=</span> <span class="dt">Just</span> tmp
+                   , stubDir      <span class="fu">=</span> <span class="dt">Just</span> tmp
+                     }
+      _ <span class="ot">&lt;-</span> GHC.setSessionDynFlags df'
+      act</code></pre></div>
+<p>Since we are compiling more than one module we need to set the <code>gchMode</code> flag to <code>CompManager</code> which is equivalent to <code>--make</code> when compiling from the command line. We set <code>ghcLink</code> to LinkInMemory which amounts to doing dynamic linking of the libraries. Also important are the exposed packages defined in <code>packageFlags</code>, these expose a few packages needed by our program that otherwise would be hidden (we can achieve a similar result using <code>ghc-pkg expose package</code>).</p>
+<p>The rest of the set up is straightforward, we add paths to the includes and libraries directories so the compiler knows where to look and set a temporary directory for the compiler to work in.</p>
+<p><strong>Targets</strong></p>
+<p>The only thing left is to define the “action” to pass to the above function. This action is wrapped inside the GhcMonad and runs with all the settings defined above.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">getGhcInfo ::</span> FilePath <span class="ot">-&gt;</span> <span class="dt">GHC.Ghc</span> <span class="dt">ModGuts</span>
+getGhcInfo target <span class="fu">=</span> <span class="kw">do</span>
+  GHC.setTargets <span class="fu">.</span> return <span class="fu">=&lt;&lt;</span> GHC.guessTarget target <span class="dt">Nothing</span>
+  _ <span class="ot">&lt;-</span> GHC.depanal [] <span class="dt">False</span>
+  GHC.load <span class="dt">GHC.LoadAllTargets</span>
+  makeModGuts target</code></pre></div>
+<p>Given a path to a module, the above function first creates a <code>Target</code> from the String (FilePath in our case) given, we then set the targets for compilation.</p>
+<p><strong>Dependency Analysis</strong></p>
+<p>After setting up the targets, we need to decide which targets to compile first, as there might be some dependencies between the modules. This is done by <code>depanal</code> <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/API#DependencyAnalysis">which traverses the transitive dependencies of the module (by reading the import directives in the file).</a> </p>
+<p><strong>Load and compile</strong></p>
+<p>Finally we simply load the target and compile </p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeModGuts ::</span> FilePath <span class="ot">-&gt;</span> <span class="dt">GHC.Ghc</span> <span class="dt">ModGuts</span>
+makeModGuts f <span class="fu">=</span> <span class="kw">do</span>
+  modGraph <span class="ot">&lt;-</span> GHC.getModuleGraph
+  <span class="kw">case</span> find (\m <span class="ot">-&gt;</span> not (isBootSummary m) <span class="fu">&amp;&amp;</span> f <span class="fu">==</span> msHsFilePath m) modGraph <span class="kw">of</span>
+    <span class="dt">Just</span> modSummary <span class="ot">-&gt;</span> <span class="kw">do</span>
+      parsed   <span class="ot">&lt;-</span> GHC.parseModule modSummary
+      d <span class="ot">&lt;-</span> GHC.desugarModule <span class="fu">=&lt;&lt;</span> GHC.typecheckModule parsed
+      return <span class="fu">$!</span> GHC.coreModule d
+    <span class="dt">Nothing</span> <span class="ot">-&gt;</span>
+      panic <span class="st">&quot;Ghc Interface: Unable to get GhcModGuts&quot;</span></code></pre></div>
+<p>The compilation generates a module graph, this is stored as a list of <a href="http://downloads.haskell.org/~ghc/7.10.3/docs/html/libraries/ghc-7.10.3/GHC.html#t:ModSummary">ModSummary</a> from which we extract the one we need and last but not least we parse, typecheck and desugar the module into Core.</p>
+<p><strong>Final Remarks </strong></p>
+<p>The above code was largely <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/master/src/Language/Haskell/Liquid/GHC/Interface.hs">taken from Liquid Haskell</a> and I spent quite a few days trying to make sense and understand the inner workings of the compiler and the GhcMonad.</p>
+<p>With the above code I am able to compile entire packages with some big exceptions:</p>
+<ul>
+<li>Modules inside packages that depend on non-exposed modules fail to compile. At first I thought this was something to do with the include/library directories, but that turned out not to be the problem. As of this writing I have yet to find a solution to this problem.<br />
+<br />
+</li>
+<li>Modules that contain .hsc files fail to compile. For now I have found  a manual solution: compile each .hsc file using the command line tool <code>hsc2hs</code>. </li>
+</ul>
+<p>If you know how to improve the above code or how to solve the problems I listed here, please do get in touch!</p>
+  <div id="postDate">
+    June 11, 2016
+  </div>
+  <div id="postBar">
+    <a href="../blog.html"> Go Back </a>
+    <a href="../index.html"> Home </a>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+<!-- JavaScript -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-19951364-4', 'auto');
+
+ga('send', 'pageview');
+    </script>
+  </body>
+</html>
