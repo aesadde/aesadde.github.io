@@ -2,7 +2,7 @@
 
 [[ $# -ne 1 ]] && usage echo -e "Specify commit message"
 
-BLOG=blog-aesadde
+SITE=blog-aesadde
 
 # Temporarily store uncommited changes
 git stash
@@ -11,8 +11,7 @@ git stash
 git checkout develop
 
 # Build new files
-stack exec $BLOG clean
-stack exec $BLOG build
+stack build && stack exec $SITE -- clean; stack exec $SITE -- build
 
 # Get previous files
 git checkout -b master --track origin/master
@@ -30,4 +29,4 @@ git push origin master:master
 # Restoration
 git checkout develop
 git branch -D master
-git stash pop
+git stash apply
