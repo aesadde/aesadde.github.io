@@ -1,9 +1,29 @@
-div#main-content {
+.mainContent {
   margin:auto;
-  width:40%;
-  margin-top:10%;
+  width:600px;
+  margin-top:151px;
+}
+
+.sec {
+}
+
+.sec-title {
+  color:#FFCD00;
+  float: left;
+  font-size: 18px;
+  line-height: 18px;
+  font-style: italic;
 }
 
 div#main-content a {
   font-weight:bold
+}
+
+.sec {
+  border-top: none;
+  padding: 0px;
+}
+
+.sec-content {
+  padding-left: 120px;
 }

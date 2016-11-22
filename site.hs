@@ -78,26 +78,25 @@ pandocReaderOptions = defaultHakyllReaderOptions
 -------------------------------------------------------------------------------
 
 
--- Configuration --------------------------------------------------------------
-dontIgnoreHtaccess :: String -> Bool
-dontIgnoreHtaccess ".htaccess" = False
-dontIgnoreHtaccess path        = ignoreFile defaultConfiguration path
-
-hakyllConf :: Configuration
-hakyllConf = defaultConfiguration
-             {
-               deployCommand = "./extras/deploy.sh"
-             , ignoreFile = dontIgnoreHtaccess
-}
-
-
 main :: IO ()
 main = hakyllWith hakyllConf $ do
 
 -- General Rules ---------------------------------------------------------------
     match "templates/*" $ compile templateCompiler
 
-    match "images/*" $ do
+    tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+
+    -- tagsRules tags $ \tag pattern -> do
+    --   let title = "Posts tagged " ++ tag
+    --   route $ gsubRoute " " (const "-")
+    --   compile $ do
+    --     posts <- constField "posts" <$> postLst pattern "templates/tag-item.html" (postCtx tags) recentFirst
+    --     makeItem ""
+    --       >>= loadAndApplyTemplate "templates/tagpage.html" (posts <> constField "tag" tag <> postCtx tags)
+    --       >>= loadAndApplyTemplate "templates/main.html" (posts <> constField "tag" tag <> postCtx tags)
+
+
+    match "files/*" $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -110,23 +109,19 @@ main = hakyllWith hakyllConf $ do
         compile compressCssCompiler
 
 -- Home -----------------------------------------------------------------------
-    match "index.md" $ do
+    match "*.md" $ do
       route $ setExtension "html"
       compile $ pandocCompiler
                   >>= loadAndApplyTemplate "templates/default.html" pageCtx
                   >>= relativizeUrls
 
 -- Now pages ------------------------------------------------------------------
-    match "now.md" $ do
-      route   $ setExtension "html"
-      compile $ pandocCompiler
-          >>= loadAndApplyTemplate "templates/default.html" pageCtx
-          >>= relativizeUrls
 
     match "old-now/*.md" $ do
       route $ setExtension "html"
       compile $ pandocCompiler
           >>= saveSnapshot "content"
+          >>= loadAndApplyTemplate "templates/now.html" pageCtx
           >>= loadAndApplyTemplate "templates/default.html" pageCtx
           >>= relativizeUrls
 
@@ -135,7 +130,7 @@ main = hakyllWith hakyllConf $ do
       compile $ do
         nows <- recentFirst =<< loadAll "old-now/*"
         let oldNewCtx =
-              listField "nows" postCtx (return nows)
+              listField "posts" dateCtx (return nows)
               <> constField "title" "Old-Now"
               <> pageCtx
         makeItem ""
@@ -144,12 +139,13 @@ main = hakyllWith hakyllConf $ do
           >>= relativizeUrls
 
 -- Blog -----------------------------------------------------------------------
+
     create ["blog.html"] $ do
       route idRoute
       compile $ do
           posts <- recentFirst =<< loadAll "posts/*"
           let blogCtx =
-                listField "posts" postCtx (return posts)
+                listField "posts" dateCtx (return posts)
                 <> constField "title" "Blog"
                 <> pageCtx
           makeItem ""
@@ -161,8 +157,8 @@ main = hakyllWith hakyllConf $ do
       route $ setExtension "html"
       compile $ pandocCompilerWith pandocReaderOptions pandocWriterOptions
         >>= saveSnapshot "content"
-        >>= loadAndApplyTemplate "templates/post.html" postCtx
-        >>= loadAndApplyTemplate "templates/default.html" postCtx
+        >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
+        >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
         >>= relativizeUrls
 
 -- Projects -------------------------------------------------------------------
@@ -175,8 +171,11 @@ main = hakyllWith hakyllConf $ do
 pageCtx :: Context String
 pageCtx = defaultContext
 
-postCtx :: Context String
-postCtx = dateField "date" "%B %e, %Y" <> pageCtx
+dateCtx :: Context String
+dateCtx = dateField "date" "%B %e, %Y" <> pageCtx
+
+postCtx :: Tags -> Context String
+postCtx tags = tagsField "tags" tags <> dateCtx
 
 infoContext :: Context a
 infoContext = field "info" $ \item -> do

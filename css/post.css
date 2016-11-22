@@ -1,6 +1,6 @@
 div#post {
   margin:auto;
-  width:50%;
+  width:700px;
   margin-top:151px;
 }
 
@@ -8,8 +8,18 @@ div#post a {
   font-weight:bold;
 }
 
+div#post a:hover, a:active, a:focus {
+  color:#FFCD00;
+  text-decoration:none
+}
+
 div#post div#postDate {
 }
 
 div#post div#postBar {
+}
+
+div#postBar a:hover, a:active, a:focus {
+  color:darkred;
+  text-decoration:none
 }

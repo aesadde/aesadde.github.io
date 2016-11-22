@@ -2,7 +2,7 @@
 title: What I'm doing now
 ---
 
-<div id="main-content">
+<div id="now-content" class="mainContent">
 
 This is a [Now page](http://nownownow.com/about). It details what I am
 currently focused and working on.

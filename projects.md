@@ -2,7 +2,7 @@
 title: Projects
 ---
 
-<div id="projects-content">
+<div id="projects-content" class="mainContent">
 
 This page contains projects that I've been involved in, they are not
 necessarily the latest projects I'm working on. Check the [Now page](/now.html)

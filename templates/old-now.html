@@ -1,9 +1,10 @@
-$body$
+<div id="nows-content" class="mainContent">
 Here are old versions of my now-page:
 <ul>
-    $for(nows)$
+    $for(posts)$
         <li>
-            <a href="$url$">$title$</a> - $date$
+            <a href="$url$">$title$</a>
         </li>
     $endfor$
 </ul>
+</div>
