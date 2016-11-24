@@ -4,6 +4,10 @@
   margin-top:151px;
 }
 
+.mainContent a {
+  font-weight:bold
+}
+
 .sec {
 }
 
@@ -15,9 +19,11 @@
   font-style: italic;
 }
 
-div#main-content a {
-  font-weight:bold
-}
+.sec-title::selection { background: darkred }
+
+.sec-title::-moz-selection { background: darkred }
+
+
 
 .sec {
   border-top: none;
