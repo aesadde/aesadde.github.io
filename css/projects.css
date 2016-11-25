@@ -1,3 +1,26 @@
-div#projects-content {
+div#projs-intro {
   text-align: center;
+}
+
+.proj-sec {
+  width: 700px;
+}
+
+.proj-info {
+  color: darkred;
+}
+
+.proj-date {
+  color: darkred;
+  font-style: italic;
+  font-size: 14px;
+}
+
+div#projects-content ul {
+  list-style-type: square;
+}
+
+.read-more {
+  float: right;
+  font-size: 12px;
 }

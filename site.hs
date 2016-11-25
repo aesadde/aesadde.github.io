@@ -108,6 +108,10 @@ main = hakyllWith hakyllConf $ do
         route   idRoute
         compile compressCssCompiler
 
+    match "js/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
 -- Home -----------------------------------------------------------------------
     match "*.md" $ do
       route $ setExtension "html"
@@ -180,4 +184,4 @@ postCtx tags = tagsField "tags" tags <> dateCtx
 infoContext :: Context a
 infoContext = field "info" $ \item -> do
     metadata <- getMetadata (itemIdentifier item)
-    return $ fromMaybe "" $ M.lookup "info" metadata
+    return . fromMaybe "" $ M.lookup "info" metadata

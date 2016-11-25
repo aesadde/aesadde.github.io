@@ -29,6 +29,7 @@ if stack build; then
   # Restoration
   git checkout develop
   git branch -D master
+  git push source develop
   git stash apply
 else
   echo "Site didn't build -- didn't publish"
