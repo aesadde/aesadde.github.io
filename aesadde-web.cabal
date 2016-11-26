@@ -1,13 +1,13 @@
-name:                blog-aesadde
+name:                aesadde-web
 version:             0.1.0.0
 synopsis:            Hakyll project template from stack
 description:         Please see README.md
-homepage:            https://github.com/githubuser/blog-aesadde#readme
+homepage:            https://github.com/aesadde/aesadde-web#readme
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2016 Author name here
+author:              Alberto Sadde
+maintainer:          albertosadde@gmail.com
+copyright:           2016 Alberto Sadde
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
