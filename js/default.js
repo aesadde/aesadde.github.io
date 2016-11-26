@@ -1,3 +1,5 @@
+document.getElementById('proj-details').style.display = 'none';
+
 document.getElementById('showDiv').onclick=function(){
 
   var display = document.getElementById('proj-details').style.display;

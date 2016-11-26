@@ -84,6 +84,8 @@ main = hakyllWith hakyllConf $ do
 -- General Rules ---------------------------------------------------------------
     match "templates/*" $ compile templateCompiler
 
+    match "partials/*" $ compile templateCompiler
+
     tags <- buildTags "posts/*" (fromCapture "tags/*.html")
 
     -- tagsRules tags $ \tag pattern -> do
@@ -166,6 +168,25 @@ main = hakyllWith hakyllConf $ do
         >>= relativizeUrls
 
 -- Projects -------------------------------------------------------------------
+    match "projects/*.md" $ do
+      route idRoute
+      compile $ pandocCompilerWith pandocReaderOptions pandocWriterOptions
+        >>= relativizeUrls
+
+    create ["projects.html"] $ do
+      route idRoute
+      compile $ do
+        projects <- recentFirst =<< loadAll "projects/*.md"
+        let projCtx =
+              listField "projects" yearCtx (return projects)
+              <> constField "title" "Projects"
+              <> pageCtx
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/projects.html" projCtx
+          >>= loadAndApplyTemplate "templates/default.html" projCtx
+          >>= relativizeUrls
+
+
 
 -------------------------------------------------------------------------------
 -- Contexts -------------------------------------------------------------------
@@ -177,6 +198,9 @@ pageCtx = defaultContext
 
 dateCtx :: Context String
 dateCtx = dateField "date" "%B %e, %Y" <> pageCtx
+
+yearCtx :: Context String
+yearCtx = dateField "date" "%Y" <> pageCtx
 
 postCtx :: Tags -> Context String
 postCtx tags = tagsField "tags" tags <> dateCtx
