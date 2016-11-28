@@ -2,7 +2,13 @@
   <div class="sec-title"> $title$
     <div class="proj-date">$date$</div>
   </div>
+
   <div class="sec-content">
+  $if(github)$
+  <div class="github">
+    This Project is available <a href="$github$">online</a>
+    </div>
+  $endif$
     $body$
   </div>
 </div>
