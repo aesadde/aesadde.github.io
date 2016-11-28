@@ -1,14 +1,12 @@
 ---
 title: Haskell-Stats
 published: 2016
+github: https://github.com/aesadde/haskell-stats
 ---
 This is a project that spawned from a collections of scripts that I used to
 gather data for my masters thesis. It is an ongoing project and its far from
 complete.
 
-
-This is an open source project and all the code is available
-[online](https://github.com/aesadde/haskell-stats).
 <div class="read-more"> <a href="#" id="showDiv">Read more</a> </div>
 
 <div id="proj-details">
