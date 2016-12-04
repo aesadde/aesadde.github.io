@@ -12,14 +12,18 @@ complete.
 <div id="proj-details">
 <span class="proj-info">Objectives:</span>
 <ul>
-<li> To provide a query engine (in the style of Hoogle) that gives information about
-all Hackage packages.
-<li> The engine will provide ways to gather information such as most used and downloaded packages and modules; most called functions;
+<li> To provide a query engine (in the style of Hoogle) that gives information
+about all Hackage packages.
+<li> The engine will provide ways to gather information such as most used and
+downloaded packages and modules; most called functions;
 </ul>
 
 <span class="proj-info">Current Status:</span>
 <ul>
-<li> Architecture change: the current version of the engine assumes a downloaded list of packages. We are working to use directly the hackage database.
-<li> API: we are building an extensible API so that users can implement their own queries on the data.
+<li> Architecture change: the current version of the engine assumes
+a downloaded list of packages. We are working to use directly the hackage
+database.
+<li> API: we are building an extensible API so that users can implement their
+own queries on the data.
 </ul>
 </div>

@@ -1,6 +1,7 @@
 ---
 title: Alberto Sadde
 info: Venezuelan, Computer Scientist.
+style: main.css
 ---
 
 <div id="main-content" class="mainContent">

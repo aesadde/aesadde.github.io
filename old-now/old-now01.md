@@ -2,6 +2,7 @@
 published: 2016-07-07
 title: July 07 to October 15, 2016
 author: Alberto Sadde
+style: main.css
 ---
 Until the 30 of August I am mostly working on my masters thesis at Oxford
 University. I am trying to blog about my progress on it here.

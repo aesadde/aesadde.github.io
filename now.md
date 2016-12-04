@@ -1,5 +1,6 @@
 ---
 title: What I'm doing now
+style: main.css
 ---
 
 <div id="now-content" class="mainContent">

@@ -1,6 +1,7 @@
 ---
 published: 2016-11-15
 title: October 15 to November 15, 2016
+style: main.css
 ---
 
 I just graduated from an MSc at Oxford and I'm currently looking for my

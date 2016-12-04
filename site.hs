@@ -138,6 +138,7 @@ main = hakyllWith hakyllConf $ do
         let oldNewCtx =
               listField "posts" dateCtx (return nows)
               <> constField "title" "Old-Now"
+              <> constField "style" "main.css"
               <> pageCtx
         makeItem ""
           >>= loadAndApplyTemplate "templates/old-now.html" oldNewCtx
@@ -153,6 +154,7 @@ main = hakyllWith hakyllConf $ do
           let blogCtx =
                 listField "posts" dateCtx (return posts)
                 <> constField "title" "Blog"
+                <> constField "style" "blog.css"
                 <> pageCtx
           makeItem ""
             >>= loadAndApplyTemplate "templates/blog.html" blogCtx
@@ -180,6 +182,7 @@ main = hakyllWith hakyllConf $ do
         let projCtx =
               listField "projects" yearCtx (return projects)
               <> constField "title" "Projects"
+              <> constField "style" "projects.css"
               <> pageCtx
         makeItem ""
           >>= loadAndApplyTemplate "templates/projects.html" projCtx
