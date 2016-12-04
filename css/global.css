@@ -1,3 +1,8 @@
+* {
+  -moz-box-sizgin: border-box;
+  box-sizing: border-box;
+}
+
 body {
   font-family:'Lato', sans-serif;
   font-weight:300;
@@ -27,6 +32,7 @@ div#wrapper {
 }
 
 div#footer {
+  padding-top: 2%;
   width: 90%;
   text-align: right;
   font-size:10px;

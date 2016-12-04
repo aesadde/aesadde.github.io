@@ -1,5 +1,6 @@
 div#header {
   top:0px;
+  max-height: 25%;
   position:fixed;
   z-index:10;
   width:100%;
@@ -9,10 +10,10 @@ div#header {
 
 div#header div#headerWrapper {
   max-width:700px;
-  padding:20px 0 25px 0;
+  padding:10px 0 15px 0;
   margin:auto;
   position:relative;
-  background:url(images/me.png) no-repeat center right;
+  /* background:url(images/me.png) no-repeat center right; */
 }
 
 div#header a#name {
