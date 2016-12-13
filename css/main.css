@@ -1,1 +1,37 @@
-.mainContent{margin:auto;width:600px;margin-top:151px}.mainContent a{font-weight:bold}.sec{}.sec-title{color:#FFCD00;float:left;font-size:18px;line-height:18px;font-style:italic}.sec-title::selection{background:darkred}.sec-title::-moz-selection{background:darkred}.sec{border-top:none;padding:0px}.sec-content{padding-left:120px}
+.mainContent {
+	margin-top: 1em;
+	max-width: 80vw;
+	/* since this element is a flex child; align it centrally */
+	align-self: center;
+}
+
+.mainContent a {
+	font-weight: bold
+}
+
+.sec {}
+
+.sec-title {
+    color: #FFCD00;
+    float: left;
+    font-size: 18px;
+    line-height: 18px;
+    font-style: italic
+}
+
+.sec-title::selection {
+    background: darkred
+}
+
+.sec-title::-moz-selection {
+    background: darkred
+}
+
+.sec {
+    border-top: none;
+    padding: 0px
+}
+
+.sec-content {
+    padding-left: 120px
+}
