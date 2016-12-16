@@ -1,39 +1,37 @@
 .mainContent {
-  margin:auto;
-  width:600px;
-  margin-top:151px;
+	margin-top: 1em;
+	max-width: 80vw;
+	/* since this element is a flex child; align it centrally */
+	align-self: center;
 }
 
 .mainContent a {
-  font-weight:bold
+	font-weight: bold
 }
 
-.sec {
-}
+.sec {}
 
 .sec-title {
-  color:#FFCD00;
-  float: left;
-  font-size: 18px;
-  line-height: 18px;
-  font-style: italic;
+    color: #FFCD00;
+    float: left;
+    font-size: 18px;
+    line-height: 18px;
+    font-style: italic
 }
 
-.sec-title::selection { background: darkred }
+.sec-title::selection {
+    background: darkred
+}
 
-.sec-title::-moz-selection { background: darkred }
-
-
+.sec-title::-moz-selection {
+    background: darkred
+}
 
 .sec {
-  border-top: none;
-  padding: 0px;
+    border-top: none;
+    padding: 0px
 }
 
 .sec-content {
-  padding-left: 120px;
-}
-
-.sec-wrapper {
-  text-align: left;
+    padding-left: 120px
 }
