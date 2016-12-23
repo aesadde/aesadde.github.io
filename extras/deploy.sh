@@ -2,7 +2,7 @@
 
 [[ $# -ne 1 ]] && usage echo -e "Specify commit message"
 
-SITE=blog-aesadde
+SITE=web
 
 # Temporarily store uncommited changes
 git stash
