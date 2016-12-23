@@ -1,3 +1,7 @@
+---
+title: Haskell Stats
+---
+
 <p>This is a project that spawned from a collections of scripts that I used to gather data for my masters thesis. It is an ongoing project and its far from complete.</p>
 <div class="read-more">
 <a href="#" id="showDiv">Read more</a>
