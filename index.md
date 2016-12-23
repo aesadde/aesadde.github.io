@@ -50,7 +50,7 @@ people to the sport.
 <div class="sec">
 <div class="sec-title">Other</div>
 <div id="other" class="sec-content">
-<a href="./files/cv.pdf" target="_blank">Resume</a>
+<a href="./files/resume.pdf" target="_blank">Resume</a>
 <a href="https://github.com/aesadde" target="_blank">GitHub</a>
 <a href="https://uk.linkedin.com/in/aesadde" target="_blank">LinkedIn</a>
 </div>

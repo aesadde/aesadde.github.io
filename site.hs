@@ -102,6 +102,10 @@ main = hakyllWith hakyllConf $ do
         route   idRoute
         compile copyFileCompiler
 
+    match "files/**" $ do
+        route   idRoute
+        compile copyFileCompiler
+
     match "CNAME" $ do
         route   idRoute
         compile copyFileCompiler
