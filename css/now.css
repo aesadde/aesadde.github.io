@@ -1,1 +1,5 @@
-@import "main.css";div#now-content{max-width:500px;padding-left:120px}
+@import "main.css";
+
+div#now-content {
+  max-width:500px
+}
