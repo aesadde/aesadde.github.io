@@ -1,15 +1,18 @@
 .mainContent {
-	margin-top: 1em;
-	max-width: 80vw;
 	/* since this element is a flex child; align it centrally */
 	align-self: center;
+  margin:auto;
+	max-width:600px;
 }
 
 .mainContent a {
 	font-weight: bold
 }
 
-.sec {}
+.sec {
+  border-top:none;
+	padding:0px
+}
 
 .sec-title {
     color: #FFCD00;

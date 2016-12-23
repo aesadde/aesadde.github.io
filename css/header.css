@@ -2,7 +2,7 @@
 		display: flex;
 		flex-flow: column nowrap;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 0px 3px rgba(0, 0, 0, 0.1);
-    background: white
+    background: white;
 }
 /* vertical arrangement of elements */
 #headerWrapper {
@@ -10,8 +10,8 @@
 		flex-flow: column nowrap;
 		align-items: center;
 		padding: 1.4em 1em;
-    background: url(images/me.png) no-repeat center right
 }
+
 /* horizontal arrangement of elements */
 #navigation {
 	display: flex;
@@ -19,6 +19,7 @@
   justify-content: center;
   align-items: baseline;
 }
+
 /* main container of site */
 .container {
 	display: flex;

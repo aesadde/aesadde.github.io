@@ -1,11 +1,8 @@
 @import "main.css";
 
 div#projs-intro {
+  padding-top: 1%;
   text-align: center;
-}
-
-.proj-sec {
-  width: 700px;
 }
 
 .proj-info {

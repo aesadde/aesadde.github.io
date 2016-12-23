@@ -27,13 +27,14 @@ a:hover, a:active, a:focus {
 div#wrapper {
   z-index:5;
   top:0px;
-  width:100%;
+  max-width:600px;
+  margin: auto;
   height:auto
 }
 
 div#footer {
   padding-top: 2%;
-  width: 90%;
+  width: 80%;
   text-align: right;
   font-size:10px;
 }

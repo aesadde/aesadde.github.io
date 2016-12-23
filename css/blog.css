@@ -1,1 +1,6 @@
 @import "main.css";
+
+div#blog-content {
+  padding-left: 120px;
+  max-width: 500px
+}
