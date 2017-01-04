@@ -58,6 +58,7 @@ myPandocExtensions = S.fromList
                      , Ext_auto_identifiers
                      , Ext_header_attributes
                      , Ext_implicit_header_references
+                     , Ext_link_attributes
                      , Ext_line_blocks]
 
 pandocWriterOptions :: WriterOptions
@@ -86,7 +87,7 @@ main = hakyllWith hakyllConf $ do
 
     match "partials/*" $ compile templateCompiler
 
-    tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+    tags <- buildTags "posts/**" (fromCapture "tags/*.html")
 
     -- tagsRules tags $ \tag pattern -> do
     --   let title = "Posts tagged " ++ tag
@@ -154,7 +155,7 @@ main = hakyllWith hakyllConf $ do
     create ["blog.html"] $ do
       route idRoute
       compile $ do
-          posts <- recentFirst =<< loadAll "posts/*"
+          posts <- recentFirst =<< loadAll "posts/**"
           let blogCtx =
                 listField "posts" dateCtx (return posts)
                 <> constField "title" "Blog"
@@ -165,13 +166,14 @@ main = hakyllWith hakyllConf $ do
             >>= loadAndApplyTemplate "templates/default.html" blogCtx
             >>= relativizeUrls
 
-    match "posts/*.md" $ do
+    match "posts/**" $ do
       route $ setExtension "html"
       compile $ pandocCompilerWith pandocReaderOptions pandocWriterOptions
         >>= saveSnapshot "content"
         >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
         >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
         >>= relativizeUrls
+
 
 -- Projects -------------------------------------------------------------------
     match "projects/*.md" $ do
