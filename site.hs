@@ -88,7 +88,7 @@ main = hakyllWith hakyllConf $ do
     match "partials/*" $ compile templateCompiler
 
     -- build all the tags from all the posts
-    tags <- buildTags "posts/**" (fromCapture "tags/*.html")
+    tags <- buildTags "posts/**" (fromCapture "tag-pages/*.html")
 
     tagsRules tags $ \tag pattern -> do
       let title = "Posts tagged " ++ tag
