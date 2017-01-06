@@ -17,7 +17,7 @@ if stack build; then
   git checkout -b master --track origin/master
 
   # Overwrite existing files with new files
-  cp -a _site/. .
+  cp -ar _site/. .
 
   # Commit
   git add -A
