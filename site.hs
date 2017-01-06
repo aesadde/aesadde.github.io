@@ -87,16 +87,23 @@ main = hakyllWith hakyllConf $ do
 
     match "partials/*" $ compile templateCompiler
 
+    -- build all the tags from all the posts
     tags <- buildTags "posts/**" (fromCapture "tags/*.html")
 
-    -- tagsRules tags $ \tag pattern -> do
-    --   let title = "Posts tagged " ++ tag
-    --   route $ gsubRoute " " (const "-")
-    --   compile $ do
-    --     posts <- constField "posts" <$> postLst pattern "templates/tag-item.html" (postCtx tags) recentFirst
-    --     makeItem ""
-    --       >>= loadAndApplyTemplate "templates/tagpage.html" (posts <> constField "tag" tag <> postCtx tags)
-    --       >>= loadAndApplyTemplate "templates/main.html" (posts <> constField "tag" tag <> postCtx tags)
+    tagsRules tags $ \tag pattern -> do
+      let title = "Posts tagged " ++ tag
+      route $ idRoute
+      compile $ do
+        posts <- recentFirst =<< loadAll pattern
+        let ctx = constField "title" title
+                  <> constField "style" "blog.css"
+                  <> listField "posts" dateCtx (return posts)
+                  <> defaultContext
+
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/blog.html" ctx
+          >>= loadAndApplyTemplate "templates/default.html" ctx
+          >>= relativizeUrls
 
 
     match "files/*" $ do
@@ -123,7 +130,7 @@ main = hakyllWith hakyllConf $ do
     match "*.md" $ do
       route $ setExtension "html"
       compile $ pandocCompiler
-                  >>= loadAndApplyTemplate "templates/default.html" pageCtx
+                  >>= loadAndApplyTemplate "templates/default.html" defaultContext
                   >>= relativizeUrls
 
 -- Now pages ------------------------------------------------------------------
@@ -132,8 +139,8 @@ main = hakyllWith hakyllConf $ do
       route $ setExtension "html"
       compile $ pandocCompiler
           >>= saveSnapshot "content"
-          >>= loadAndApplyTemplate "templates/now.html" pageCtx
-          >>= loadAndApplyTemplate "templates/default.html" pageCtx
+          >>= loadAndApplyTemplate "templates/now.html" defaultContext
+          >>= loadAndApplyTemplate "templates/default.html" defaultContext
           >>= relativizeUrls
 
     create ["old-now.html"] $ do
@@ -144,7 +151,7 @@ main = hakyllWith hakyllConf $ do
               listField "posts" dateCtx (return nows)
               <> constField "title" "Old-Now"
               <> constField "style" "main.css"
-              <> pageCtx
+              <> defaultContext
         makeItem ""
           >>= loadAndApplyTemplate "templates/old-now.html" oldNewCtx
           >>= loadAndApplyTemplate "templates/default.html" oldNewCtx
@@ -157,10 +164,11 @@ main = hakyllWith hakyllConf $ do
       compile $ do
           posts <- recentFirst =<< loadAll "posts/**"
           let blogCtx =
-                listField "posts" dateCtx (return posts)
+                listField "posts" (postCtx tags) (return posts)
                 <> constField "title" "Blog"
                 <> constField "style" "blog.css"
-                <> pageCtx
+                <> field "taglist" (\_ -> renderTagList tags)
+                <> defaultContext
           makeItem ""
             >>= loadAndApplyTemplate "templates/blog.html" blogCtx
             >>= loadAndApplyTemplate "templates/default.html" blogCtx
@@ -189,7 +197,7 @@ main = hakyllWith hakyllConf $ do
               listField "projects" yearCtx (return projects)
               <> constField "title" "Projects"
               <> constField "style" "projects.css"
-              <> pageCtx
+              <> defaultContext
         makeItem ""
           >>= loadAndApplyTemplate "templates/projects.html" projCtx
           >>= loadAndApplyTemplate "templates/default.html" projCtx
@@ -201,20 +209,11 @@ main = hakyllWith hakyllConf $ do
 -- Contexts -------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
--- | Custom default Context for the site
-pageCtx :: Context String
-pageCtx = defaultContext
-
 dateCtx :: Context String
-dateCtx = dateField "date" "%B %e, %Y" <> pageCtx
+dateCtx = dateField "date" "%B %e, %Y" <> defaultContext
 
 yearCtx :: Context String
-yearCtx = dateField "date" "%Y" <> pageCtx
+yearCtx = dateField "date" "%Y" <> defaultContext
 
 postCtx :: Tags -> Context String
 postCtx tags = tagsField "tags" tags <> dateCtx
-
-infoContext :: Context a
-infoContext = field "info" $ \item -> do
-    metadata <- getMetadata (itemIdentifier item)
-    return . fromMaybe "" $ M.lookup "info" metadata

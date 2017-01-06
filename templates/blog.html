@@ -1,8 +1,13 @@
- <div id="blog-content" class="mainContent">
+<div id="blog-content" class="mainContent">
   $for(posts)$
   <br>
   <a href="$url$">$title$</a> - $date$
   <br>
-  $if(tags)$ $tags$ $endif$
   $endfor$
+  <br>
+  <div id="tag-list">
+    $if(taglist)$
+    All Tags: $taglist$
+    $endif$
+  </div>
 </div>
