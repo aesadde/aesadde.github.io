@@ -2,7 +2,9 @@
 
 [[ $# -ne 1 ]] && echo -e "Specify commit message"
 
+ROOT=/Users/aesadde/Projects/aesadde-web/
 SITE=web
+CONSOLIDATION=/Users/aesadde/Documents/Oxford/Dissertation/Consolidation/page/
 
 # Temporarily store uncommited changes
 git stash
@@ -12,6 +14,13 @@ git checkout develop
 
 # Build new files
 if stack build; then
+
+  # check that the dissertation site is up to date
+  # (this might not be the smartest thing but works for now!)
+  cd $CONSOLIDATION
+  stack exec page -- deploy
+  cd $ROOT
+
   stack exec $SITE -- clean; stack exec $SITE -- build
   # Get previous files
   git checkout -b master --track origin/master
