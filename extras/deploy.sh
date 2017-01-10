@@ -15,30 +15,25 @@ git checkout develop
 # Build new files
 if stack build; then
 
-  # check that the dissertation site is up to date
-  # (this might not be the smartest thing but works for now!)
   cd $CONSOLIDATION
   stack exec page -- deploy
   cd $ROOT
 
   stack exec $SITE -- clean; stack exec $SITE -- build
-  # Get previous files
-  git checkout -b master --track origin/master
 
   # Overwrite existing files with new files
-  cp -a _site/* .
+  rsync --checksum -ave _site/* deploy/
+  cd deploy
 
   # Commit
   git add -A
   git commit -m "Publish $1"
 
   # Push
-  git push origin master:master
+  git push origin master
 
   # Restoration
-  git checkout develop
-  git branch -D master
-  git push source develop
+  cd ..
   git stash apply
 else
   echo "Site didn't build -- didn't publish"
