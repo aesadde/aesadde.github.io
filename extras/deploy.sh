@@ -19,6 +19,9 @@ if stack build; then
   stack exec page -- deploy
   cd $ROOT
 
+  rsync --checksum -ave \
+    /Users/aesadde/Documents/Docs/Curriculum/current/cv.pdf $ROOT/files/resume.pdf
+
   stack exec $SITE -- clean; stack exec $SITE -- build
 
   # Overwrite existing files with new files
