@@ -25,12 +25,12 @@ if stack build; then
   stack exec $SITE -- clean; stack exec $SITE -- build
 
   # Overwrite existing files with new files
-  rsync --checksum -ave _site/* deploy/
-  cd deploy
+  rsync --checksum -ave $ROOT/_site/* /Users/aesad/Projects/personal-web/deploy/.
 
   # Commit
+  cd /Users/aesad/Projects/personal-web
   git add -A
-  git commit -m "Publish $1"
+  git commit -m "Publish"
 
   # Push
   git push origin master
