@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[[ $# -ne 1 ]] && usage echo -e "Specify commit message"
+[[ $# -ne 1 ]] && echo -e "Specify commit message"
 
 SITE=web
 
@@ -17,7 +17,7 @@ if stack build; then
   git checkout -b master --track origin/master
 
   # Overwrite existing files with new files
-  cp -a _site/. .
+  cp -a _site/* .
 
   # Commit
   git add -A
