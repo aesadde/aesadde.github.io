@@ -20,4 +20,3 @@ yearCtx = dateField "date" "%Y" <> defaultContext
 
 postCtx :: Tags -> Context String
 postCtx tags = tagsField "tags" tags <> dateCtx
-

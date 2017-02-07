@@ -117,7 +117,7 @@ main = hakyllWith hakyllConf $ do
 
 -- Projects -------------------------------------------------------------------
     match "projects/*.md" $ do
-      route idRoute
+      route $ setExtension "html"
       compile $ pandocCompilerWith pandocReaderOptions pandocWriterOptions
         >>= relativizeUrls
 
