@@ -6,18 +6,19 @@ style: now.css
 <div id="now-content" class="mainContent">
 
 This is a [Now page](http://nownownow.com/about). It details what I am
-currently focused and working on.
+currently focused and working on.  You can also check my previous [now pages](./old-now.html)
 
-As of 15/11/2016 this is what I've been up to:
+* I am currently working as a research engineer at [AiFi](http://aifi.io/) an early stage startup 
+developing cool computer vision products. 
 
-* I am taking some time off in Africa (my first time in the continent) while I decide what to do next.
-
-* I am improving my knowledge of Haskell and Functional Programming (I'm learning more about type systems and Category Theory). I've been
-watching Bartosz Milewski's Category Theory [lectures](https://www.youtube.com/watch?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&v=I8LbkfSSR58).
-
-* I am redesigning this site using Hakyll.
+* I am trying to keep up with Haskell development by writing my side projects and automation scripts
+  only with Haskell.
 
 
-You can also check my previous [now pages](./old-now.html)
+Books I'm reading: 
+	- The Singularity is Near by Ray Kurzweil
+	- A Guide to The Good Life by William B. Irvine
 
+* I am also trying to figure out the best way to publish notes and highlights I extract from all the
+books I read.
 </div>
