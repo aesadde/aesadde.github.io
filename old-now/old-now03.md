@@ -1,6 +1,8 @@
 ---
-title: What I'm doing now
-style: now.css
+published: 2016-11-15
+title: November 15, 2016 to Jun 24, 2017
+author: Alberto Sadde
+style: main.css
 ---
 
 <div id="now-content" class="mainContent">

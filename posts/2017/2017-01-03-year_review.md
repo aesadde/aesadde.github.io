@@ -1,7 +1,7 @@
 ---
 kind:      article
 published: 2017-01-03
-title:     2016: My year in review
+title:     "2016: My year in review"
 author:    Alberto Sadde
 tags:      life
 style:     post.css

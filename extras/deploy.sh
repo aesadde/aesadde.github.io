@@ -2,7 +2,7 @@
 
 [[ $# -ne 1 ]] && echo -e "Specify commit message"
 
-ROOT=/Users/aesadde/Projects/aesadde-web/
+ROOT=/Users/aesadde/Projects/personal-web/aesadde-web/
 SITE=web
 CONSOLIDATION=/Users/aesadde/Documents/Oxford/Dissertation/Consolidation/page/
 
@@ -25,10 +25,10 @@ if stack build; then
   stack exec $SITE -- clean; stack exec $SITE -- build
 
   # Overwrite existing files with new files
-  rsync --checksum -ave $ROOT/_site/* /Users/aesad/Projects/personal-web/deploy/.
+  rsync --checksum -ave $ROOT/_site/* /Users/aesadde/Projects/personal-web/deploy/.
 
   # Commit
-  cd /Users/aesad/Projects/personal-web
+  cd /Users/aesadde/Projects/personal-web/deploy
   git add -A
   git commit -m "Publish"
 
@@ -36,7 +36,7 @@ if stack build; then
   git push origin master
 
   # Restoration
-  cd ..
+  cd $ROOT
   git stash apply
 else
   echo "Site didn't build -- didn't publish"
